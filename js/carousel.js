@@ -1,5 +1,5 @@
 
-// task 3 create Carousel module
+// task 4 pubsub
 var Carousel = (function() {
 
 	function scrollLeft(evt) {
@@ -33,7 +33,10 @@ var Carousel = (function() {
 
 		var s = $(e.target).attr("rel");
 		id = s.slice(s.lastIndexOf('-')+1);
-		Details.loadPerson(id);
+
+		EVT.emit('person-selected', id);
+
+		//Details.loadPerson(id);
 		//debugger;
 	}
 
@@ -57,9 +60,7 @@ var Carousel = (function() {
 
 	var contentWidth, itemsWidth, position, maxPosition, id;
 
-	var api = {
-		init: init
-	}
+	EVT.on('init', init);
 
-	return api;
+	return {};
 })();

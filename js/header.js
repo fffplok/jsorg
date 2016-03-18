@@ -1,27 +1,38 @@
-// task 3 refactor header.js to a module that exposes an init function
-// note: by using the iife, we've got a singleton, which is all that is needed of Header
+// task 4 pubsub
+// TODO: I think this could be further streamlined by just having the iife that doesn't return anything. We wouldn't need variables Header, Carousel, Details
 var Header = (function() {
 	function loadPage(e) {
 		e.preventDefault();
 
 		function loaded(response, status, xhr) {
-			if (status === "success") $('#modal').show();
+			if (status === "success") toggleModal(); //$('#modal').toggle();
 		}
 
-		$modal.load($(e.target).attr("href"), loaded);
+		//$modal.load($(e.target).attr("href"), loaded);
+		$content.load($(e.target).attr("href"), loaded);
+	}
+
+	function toggleModal() {
+		$('#modal').toggle();
+	}
+
+	function closeBtnClicked(e) {
+		e.preventDefault();
+		EVT.emit('close-modal');
 	}
 
 	function init() {
 		$modal = $('[rel="js-modal"]');
+		$content = $modal.children('[rel="js-content"]');
+		$closeBtn = $modal.children('.close');
 		$('div[rel="js-controls"] a').on('click', loadPage);
-		console.log('this:', this);
+		$closeBtn.on('click', closeBtnClicked);
 	}
 
-	var $modal;
+	var $modal, $content;
 
-	var api = {
-		init: init
-	}
+	EVT.on('init', init);
+	EVT.on('close-modal', toggleModal);
 
-	return api;
+	return {};
 })();

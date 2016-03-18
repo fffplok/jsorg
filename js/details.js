@@ -1,4 +1,4 @@
-// task 3 create Details module. expose a loadPerson method that takes an id (0-5)
+// task 4 use eventEmitter2.js to create pubsub event hub. here listen to event rather than have method called directly
 var Details = (function() {
 
 	function loaded(response, status, xhr) {
@@ -10,17 +10,25 @@ var Details = (function() {
 		$content.load('details/'+id+'.html', loaded);
 	}
 
-	//not really needed here...
+	function selectPerson(e) {
+		e.preventDefault();
+		EVT.emit('person-selected', $(e.target).data('person'));
+		//loadPerson($(e.target).data('person'));
+		//loadPerson(parseInt($(e.target).data('person')));
+	}
+
 	function init() {
 		$content = $("[rel=js-details]");
+
+		$content.on('click', '[rel=js-select-person]', selectPerson);
+
+		//event listener
+		EVT.on('person-selected', loadPerson);
 	}
 
 	var $content;
 
-	var api = {
-		init: init,
-		loadPerson: loadPerson
-	}
+	EVT.on('init', init);
 
-	return api;
+	return {};
 })();
