@@ -83,6 +83,15 @@ header > .controls > a {
 	margin-right: 0px;
 }
 
+#carousel > .content > .items > .item::before {
+	content:attr(data-attr);
+	position:absolute;
+	font-size: 3em;
+	font-weight: bold;
+	color: yellow;
+	top: 130px;
+	left: 90px;
+}
 #carousel > .controls {
 	position: relative;
 	bottom: -55px;
